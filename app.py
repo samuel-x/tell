@@ -9,6 +9,7 @@ app = Flask(__name__)
 ACCESS_TOKEN = os.environ['ACCESS_TOKEN']
 VERIFY_TOKEN = os.environ['VERIFY_TOKEN']
 MAINTENANCE_MODE = os.environ['MAINTENANCE_MODE']
+SHOW_MESSAGES = os.environ['SHOW_MESSAGES']
 
 MAINTENANCE_MESSAGE = """Work in Progress pls no bully"""
 
@@ -26,7 +27,9 @@ def receive_message():
     else:
         # get whatever message a user sent the bot
         output = request.get_json()
-        print("Request: ", output)
+        if int(SHOW_MESSAGES):
+            print("Request: ", output)
+        
         for event in output['entry']:
             messaging = event['messaging']
             for message in messaging:
