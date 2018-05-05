@@ -1,0 +1,5 @@
+
+library.txt
+*.pyc
+test.csv
+client_secrets.json
