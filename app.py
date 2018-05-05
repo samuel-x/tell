@@ -25,17 +25,18 @@ def receive_message():
     #if the request was not get, it must be POST and we can just proceed with sending a message back to user
     else:
         # get whatever message a user sent the bot
-       output = request.get_json()
-       for event in output['entry']:
-          messaging = event['messaging']
-          for message in messaging:
-            if message.get('message'):
-                #Facebook Messenger ID for user so we know where to send response back to
-                message_text = get_message()    
-                recipient_id = message['sender']['id']
+        output = request.get_json()
+        print("Request: ", output)
+        for event in output['entry']:
+            messaging = event['messaging']
+            for message in messaging:
+                if message.get('message'):
+                    #Facebook Messenger ID for user so we know where to send response back to
+                    message_text = get_message()    
+                    recipient_id = message['sender']['id']
                 if message['message'].get('text'):
                     send_message(recipient_id, message_text)
-                #if user sends us a GIF, photo,video, or any other non-text item
+                    #if user sends us a GIF, photo,video, or any other non-text item
                 if message['message'].get('attachments'):
                     response_sent_nontext = get_message()
                     send_message(recipient_id, message_text)
