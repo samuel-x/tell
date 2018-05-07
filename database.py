@@ -131,10 +131,11 @@ def get_db_size():
     return str(size)
 
 def check_new_user(user_id):
-    if user_id in db.child("users").get().val().keys():
-        # We don't have a new user
-        return False
-    else:
+    try:
+        if user_id in db.child("users").get().val().keys():
+            # We don't have a new user
+            return False
+    except AttributeError:
         # We do have a new user!
         db.child("users").child(user_id).update({"name": "User " + get_db_size()})
         db.child("users").child(user_id).update({"lang": "en"})
