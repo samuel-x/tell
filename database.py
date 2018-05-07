@@ -89,7 +89,7 @@ def leave_room(user_id):
         return False
     else:
         # Remove from room and reset room id
-        room = db.child("rooms").child(room_id).get().val()
+        room = db.child("rooms").child(room_id).get().val().get("users")
         room.remove(user_id)
         db.child("users").child(user_id).update({"room_id": None})
         app.send_message(user_id, "Successfully left room " + room_id)
