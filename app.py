@@ -58,9 +58,13 @@ def send_room_message(message_text, user_id):
     if room_id == None:
         send_message(user_id, "Please join a room first! Do it with '/join_room <room_number>'")
     else:
-        for user in database.get_room(room_id):
-            if user != user_id:
-                send_translated_message(user, message_text, database.get_name(user_id))
+        room = database.get_room(room_id)
+        if room == None:
+            send_translated_message(user_id, message_text, database.get_name(user_id))
+        else:
+            for user in room:
+                if user != user_id:
+                    send_translated_message(user, message_text, database.get_name(user_id))
 
 def send_translated_message(user_id, message_text, name):
     lang = database.get_lang(user_id)

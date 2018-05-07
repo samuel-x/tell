@@ -62,6 +62,8 @@ def join_room(user_id, room_id):
     # If our room does not exist, create a new one
     if room == None:
         db.child("rooms").child(room_id).update({"users": [user_id]})
+        message = "Started a new room with id " + room_id + "\nNote: If the room is empty you will only get echoed responses.\n"
+        app.send_message(user_id, message)
         return False
     else:
         # Otherwise, set our room_id and join the room
@@ -114,7 +116,11 @@ def get_name(user_id):
 
 def get_lang(user_id):
     ''' Returns the name of the user '''
-    return db.child("users").child(user_id).get().val().get("lang")
+    lang = db.child("users").child(user_id).get().val().get("lang")
+    if lang == None:
+        return 'en'
+    else:
+        return lang
 
 def get_db_size():
     return str(len(db.child("users").get().val().keys()))
