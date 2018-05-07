@@ -62,6 +62,7 @@ def join_room(user_id, room_id):
     # If our room does not exist, create a new one
     if room == None:
         db.child("rooms").child(room_id).update({"users": [user_id]})
+        db.child("users").child(user_id).update({"room_id": room})
         message = "Started a new room with id " + room_id + "\nNote: If the room is empty you will only get echoed responses.\n"
         app.send_message(user_id, message)
         return False
