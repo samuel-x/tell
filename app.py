@@ -68,6 +68,7 @@ def send_room_message(message_text, user_id):
 
 def send_translated_message(user_id, message_text, name):
     lang = database.get_lang(user_id)
+    formatted_name = "*" + name + "*: "
     if lang == None:
         send_message(user_id, name + translator.translate(message_text).text)
     else:
