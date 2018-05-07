@@ -105,7 +105,10 @@ def set_language(user_id, language):
 
 def get_user_room(user_id):
     ''' Returns the Room ID of the user'''
-    return db.child("users").child(user_id).get().val().get("room_id")
+    try:
+        return db.child("users").child(user_id).get().val().get("room_id")
+    except AttributeError:
+        return False
 
 def get_room(room_id):
     ''' Returns a room from an ID '''
@@ -131,18 +134,22 @@ def get_db_size():
     return str(size)
 
 def check_new_user(user_id):
+    print("Checking if " + user_id + " is a new user")
     try:
-        if user_id in db.child("users").get().val().keys():
-            # We don't have a new user
-            return False
+        db.child("users").get().val().keys()
+        # Create a new dbs
     except AttributeError:
-        # We do have a new user!
-        db.child("users").child(user_id).update({"name": "New User"})
-        db.child("users").child(user_id).update({"lang": "en"})
-        welcome_message = """Welcome to Tell! Your language has been set to English. 
-        Type '/get_commands' to get a list of commands!"""
-        app.send_message(user_id, welcome_message)
-        return True
+        if user_id in list(db.child("users").get().val().keys()):
+            return False
+        else: 
+            # We do have a new user!
+            print("We have a new user!")
+            db.child("users").child(user_id).update({"name": "New User"})
+            db.child("users").child(user_id).update({"lang": "en"})
+            welcome_message = """Welcome to Tell! Your language has been set to English. 
+            Type '/get_commands' to get a list of commands!"""
+            app.send_message(user_id, welcome_message)
+            return True
 
 def get_commands(user_id):
     commands = """
