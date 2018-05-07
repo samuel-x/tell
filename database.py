@@ -70,7 +70,7 @@ def join_room(user_id, room_id):
         # Otherwise, set our room_id and join the room
         room.get("users").append(user_id)
         db.child("rooms").child(room_id).update(room)
-        db.child("users").child(user_id).update({"room_id": room})
+        db.child("users").child(user_id).update({"room_id": room_id})
         app.send_message(user_id, "Successfully joined room " + room_id)
         print("Successfully added " + user_id + " to " + room_id)
         return True
