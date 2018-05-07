@@ -62,7 +62,7 @@ def join_room(user_id, room_id):
     # If our room does not exist, create a new one
     if room == None:
         db.child("rooms").child(room_id).update({"users": [user_id]})
-        db.child("users").child(user_id).update({"room_id": room})
+        db.child("users").child(user_id).update({"room_id": room_id})
         message = "Started a new room with id " + room_id + "\nNote: If the room is empty you will only get echoed responses.\n"
         app.send_message(user_id, message)
         return False
@@ -136,7 +136,7 @@ def check_new_user(user_id):
         return False
     else:
         # We do have a new user!
-        db.child("users").child(user_id).set({"name": "User " + get_db_size()})
+        db.child("users").child(user_id).update({"name": "User " + get_db_size()})
         db.child("users").child(user_id).update({"lang": "en"})
         welcome_message = """Welcome to Tell! Your language has been set to English. 
         Type '/get_commands' to get a list of commands!"""
