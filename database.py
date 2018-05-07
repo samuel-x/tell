@@ -116,14 +116,18 @@ def get_name(user_id):
 
 def get_lang(user_id):
     ''' Returns the name of the user '''
-    lang = db.child("users").child(user_id).get().val().get("lang")
-    if lang == None:
-        return 'en'
-    else:
+    try:
+        lang = db.child("users").child(user_id).get().val().get("lang")
         return lang
+    except AttributeError:
+        return 'en'
 
 def get_db_size():
-    return str(len(db.child("users").get().val().keys()))
+    try:
+        size = len(db.child("users").get().val().keys())
+    except AttributeError:
+        size = 0
+    return str(size)
 
 def check_new_user(user_id):
     if user_id in db.child("users").get().val().keys():
