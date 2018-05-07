@@ -36,6 +36,7 @@ def receive_message():
                     if message_text == None:
                         break
                     sender_id = message['sender']['id']
+                    print("Received " + message_text + " from " + sender_id)
                     # check if this is a
                     # We've done all the parsing input, so check if they're new
                     if message_text[0] == "/":
