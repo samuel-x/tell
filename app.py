@@ -70,9 +70,9 @@ def send_translated_message(user_id, message_text, name):
     lang = database.get_lang(user_id)
     formatted_name = "*" + name + "*: "
     if lang == None:
-        send_message(user_id, name + translator.translate(message_text).text)
+        send_message(user_id, formatted_name + translator.translate(message_text).text)
     else:
-        send_message(user_id, name + translator.translate(message_text, dest=lang).text)
+        send_message(user_id, formatted_name + translator.translate(message_text, dest=lang).text)
 
 def verify_fb_token(token_sent):
     #take token sent by facebook and verify it matches the verify token you sent
