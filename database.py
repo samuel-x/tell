@@ -137,7 +137,7 @@ def check_new_user(user_id):
             return False
     except AttributeError:
         # We do have a new user!
-        db.child("users").child(user_id).update({"name": "User " + get_db_size()})
+        db.child("users").child(user_id).update({"name": "New User"})
         db.child("users").child(user_id).update({"lang": "en"})
         welcome_message = """Welcome to Tell! Your language has been set to English. 
         Type '/get_commands' to get a list of commands!"""
