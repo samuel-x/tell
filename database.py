@@ -56,6 +56,13 @@ def send_language_list(user_id):
 def join_room(user_id, room_id):
     '''This allows our user to join a room'''
 
+    try:
+        current_room = db.child("users").child(user_id).get().val().get("room_id")
+        app.send_message(user_id, "You're already currently in room " + room_id + ". Please leave the room first with /leave_room.")
+    except AttributeError:
+        # They aren't in a room so it's fine
+        pass
+
     # Get our room
     room = db.child("rooms").child(room_id).get().val()
 
