@@ -2,23 +2,24 @@ import pyrebase
 import app
 import languages
 import os
+import ast
 
 API_KEY = os.environ['API_KEY']
-AUTHDOMAIN = os.environ['AUTHDOMAIN']
-DATABASEURL = os.environ['DATABASEURL']
-PROJECTID = os.environ['PROJECTID']
-STORAGEBUCKET = os.environ['STORAGEBUCKET']
-MESSAGINGSENDERID = os.environ['MESSAGINGSENDERID']
-SERVICEACCOUNT = os.environ['SERVICEACCOUNT']
+AUTH_DOMAIN = os.environ['AUTH_DOMAIN']
+DATABASE_URL = os.environ['DATABASE_URL']
+PROJECT_ID = os.environ['PROJECT_ID']
+STORAGE_BUCKET = os.environ['STORAGE_BUCKET']
+MESSAGING_SENDER_ID = os.environ['MESSAGING_SENDER_ID']
+SERVICE_ACCOUNT = ast.literal_eval(os.environ['SERVICE_ACCOUNT'])
 
 config = {
     "apiKey": API_KEY,
-    "authDomain": AUTHDOMAIN,
-    "databaseURL": DATABASEURL,
-    "projectId": PROJECTID,
-    "storageBucket": STORAGEBUCKET,
-    "messagingSenderId": MESSAGINGSENDERID,
-    "serviceAccount": SERVICEACCOUNT
+    "authDomain": AUTH_DOMAIN,
+    "databaseURL": DATABASE_URL,
+    "projectId": PROJECT_ID,
+    "storageBucket": STORAGE_BUCKET,
+    "messagingSenderId": MESSAGING_SENDER_ID,
+    "serviceAccount": SERVICE_ACCOUNT
 };
 
 firebase = pyrebase.initialize_app(config)
