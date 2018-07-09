@@ -9,6 +9,7 @@ DATABASEURL = os.environ['DATABASEURL']
 PROJECTID = os.environ['PROJECTID']
 STORAGEBUCKET = os.environ['STORAGEBUCKET']
 MESSAGINGSENDERID = os.environ['MESSAGINGSENDERID']
+SERVICEACCOUNT = os.environ['SERVICEACCOUNT']
 
 config = {
     "apiKey": API_KEY,
@@ -16,10 +17,13 @@ config = {
     "databaseURL": DATABASEURL,
     "projectId": PROJECTID,
     "storageBucket": STORAGEBUCKET,
-    "messagingSenderId": MESSAGINGSENDERID
+    "messagingSenderId": MESSAGINGSENDERID,
+    "serviceAccount": SERVICEACCOUNT
 };
 
 firebase = pyrebase.initialize_app(config)
+
+auth = firebase.auth()
 
 db = firebase.database()
 
@@ -168,10 +172,10 @@ def check_new_user(user_id):
 def get_commands(user_id):
     commands = """
     ```
-    /join_room <room number>: Join a room
-    /leave_Room: Leave a room
-    /set_name <name>: Set your name
-    /set_lang <language>: Set your language. For a full list of languages type '/show_langs'
+/join_room <room number>: Join a room
+/leave_Room: Leave a room
+/set_name <name>: Set your name
+/set_lang <language>: Set your language. For a full list of languages type '/show_langs'
     ```"""
     app.send_message(user_id, commands)
 
