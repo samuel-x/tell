@@ -1,5 +1,7 @@
 from flask import request
 import requests
+import database
+import app
 
 def verify_fb_token(token_sent, verify_token):
     #take token sent by facebook and verify it matches the verify token you sent
@@ -7,6 +9,22 @@ def verify_fb_token(token_sent, verify_token):
     if token_sent == verify_token:
         return request.args.get("hub.challenge")
     return 'Invalid verification token'
+
+def parse_postback(postback, user_id):
+    if postback == "JOIN_PAYLOAD":
+        app.send_message(user_id, "Work in Progress...")
+    elif postback == "LEAVE_PAYLOAD":
+        database.leave_room(user_id)
+    elif postback == "NAME_PAYLOAD":
+        app.send_message(user_id, "Work in Progress...")
+    elif postback == "ROOM_INFO_PAYLOAD":
+        room = database.get_user_room(user_id)
+        if room is None:
+            app.send_message(user_id, "You're not currently in a room. Please join one.")
+        else:
+            app.send_message(user_id, "You're currently in room: " + room)
+    elif postback == "COMMAND_INFO_PAYLOAD":
+        database.get_commands(user_id)
 
 def setup_profile(verify_token):
     url = "https://graph.facebook.com/v2.6/me/messenger_profile?access_token={0}".format(verify_token)
@@ -47,7 +65,13 @@ def setup_profile(verify_token):
                             "title":"Leave Room",
                             "type":"postback",
                             "payload":"LEAVE_PAYLOAD"
+                        },
+                        {
+                            "title":"Room Information",
+                            "type":"postback",
+                            "payload":"ROOM_INFO_PAYLOAD"
                         }
+
                     ]
                 },
                 {

@@ -33,21 +33,27 @@ def receive_message():
         output = request.get_json()
         event = output['entry']
         messaging = event[0].get('messaging')[0]
-        if messaging.get('message'):
+        user_id = messaging.get('sender').get('id')
+        # If we've got a message, then read it and then do stuff
+        if messaging.get('postback'):
+            postback = messaging.get('postback').get('payload')
+            print("We've got a postback: " + postback)
+            profile.parse_postback(postback, user_id)
+        elif messaging.get('message'):
             message_text = messaging.get('message').get('text')
             if message_text == None:
                 print("This isn't a text message")
-            sender_id = messaging['sender']['id']
-            print("Received " + message_text + " from " + sender_id)
-            # check if this is a
-            # We've done all the parsing input, so check if they're new
+            print("Received " + message_text + " from " + user_id)
             if message_text[0] == "/":
-                database.parse_command(sender_id, message_text)
+                database.parse_command(user_id, message_text)
             elif int(TESTING_MODE):
-                send_translated_message(sender_id, message_text, "*TEST*")
+                send_translated_message(user_id, message_text, "*TEST*")
             elif not database.check_new_user(messaging['sender']['id']):
-                print("Sending message to ", database.get_user_room(sender_id))
-                send_room_message(message_text, sender_id)
+                print("Sending message to ", database.get_user_room(user_id))
+                send_room_message(message_text, user_id)
+        # Verification that something has been sent
+        elif messaging.get('delivery'):
+            print("Message Successfully Received!")
         else:
             print("This isn't a text message")
 

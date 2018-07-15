@@ -63,7 +63,8 @@ def join_room(user_id, room_id):
 
     try:
         current_room = db.child("users").child(user_id).get().val().get("room_id")
-        app.send_message(user_id, "You're already currently in room " + room_id + ". Please leave the room first with /leave_room.")
+        if current_room is not None:
+            app.send_message(user_id, "You're already currently in room " + room_id + ". Please leave the room first with /leave_room.")
     except AttributeError:
         # They aren't in a room so it's fine
         pass
